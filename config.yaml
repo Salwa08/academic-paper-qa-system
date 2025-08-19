@@ -1,0 +1,111 @@
+# Project Configuration
+project:
+  name: "academic-qa-system"
+  version: "1.0.0"
+  description: "Multi-approach Q&A system for academic papers"
+  author: "Salwa Khattami"
+
+# Data Configuration
+data:
+  raw_data_path: "data/raw/"
+  processed_data_path: "data/processed/"
+  external_data_path: "data/external/"
+  arxiv_categories: ["cs.AI", "cs.LG", "cs.CL"]
+  max_papers: 5000
+  chunk_size: 512
+  chunk_overlap: 50
+
+# ArXiv API Configuration
+arxiv:
+  max_results: 100
+  delay_seconds: 3
+  categories:
+    - "cs.AI" # Artificial Intelligence
+    - "cs.LG" # Machine Learning
+    - "cs.CL" # Computation and Language
+
+# Model Configuration
+models:
+  embeddings:
+    model_name: "sentence-transformers/all-MiniLM-L6-v2"
+    device: "cpu" # or "cuda" if GPU available
+
+  extractive_qa:
+    model_name: "distilbert-base-cased-distilled-squad"
+    max_answer_length: 512
+
+  generative:
+    model_name: "gpt-3.5-turbo"
+    temperature: 0.1
+    max_tokens: 500
+
+  fine_tuned:
+    base_model: "microsoft/DialoGPT-medium"
+    checkpoint_path: "models/checkpoints/"
+
+# Vector Store Configuration
+vector_store:
+  type: "chroma" # or "faiss", "pinecone"
+  collection_name: "arxiv_papers"
+  persist_directory: "data/vector_store/"
+  distance_metric: "cosine"
+
+# RAG Configuration
+rag:
+  retrieval:
+    top_k: 5
+    similarity_threshold: 0.7
+
+  generation:
+    system_prompt: |
+      You are an expert academic researcher. Answer questions based on the provided context from academic papers.
+      Always cite your sources and be precise with technical terms.
+
+    max_context_length: 2000
+    citation_format: "[{title}, {authors}, {year}]"
+
+# Evaluation Configuration
+evaluation:
+  test_size: 0.2
+  metrics:
+    - "bleu"
+    - "rouge"
+    - "semantic_similarity"
+    - "response_time"
+
+  human_eval:
+    criteria: ["accuracy", "relevance", "completeness", "clarity"]
+    scale: 5 # 1-5 rating scale
+
+# Web Interface Configuration
+web:
+  streamlit:
+    title: "Academic Paper Q&A System"
+    theme: "light"
+    sidebar_width: 300
+
+  api:
+    host: "localhost"
+    port: 8000
+    debug: false
+    cors_origins: ["http://localhost:3000", "http://localhost:8501"]
+
+# Performance Configuration
+performance:
+  cache_size: 1000
+  timeout_seconds: 30
+  max_concurrent_requests: 10
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  log_file: "logs/qa_system.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  max_file_size: "10MB"
+  backup_count: 5
+
+# Monitoring Configuration
+monitoring:
+  track_metrics: true
+  save_interactions: true
+  performance_log: "logs/performance.json"

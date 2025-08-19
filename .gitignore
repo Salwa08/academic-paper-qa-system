@@ -1,0 +1,133 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Data files
+data/raw/
+data/processed/*.pkl
+data/processed/*.parquet
+data/vector_store/
+*.h5
+*.hdf5
+
+# Model files
+models/saved_models/
+models/checkpoints/
+*.model
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.pkl
+
+# Large text files
+data/raw/*.pdf
+data/raw/*.txt
+data/raw/*.json
+data/processed/*.json
+
+# API Keys and Secrets
+.env
+.env.local
+.env.production
+config_local.yaml
+secrets.yaml
+api_keys.yaml
+openai_key.txt
+
+# Logs
+*.log
+logs/
+mlruns/
+wandb/
+
+# Vector databases
+*.faiss
+*.index
+chroma_db/
+
+# Cache files
+.cache/
+cache/
+*.cache
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+~$*.docx
+~$*.xlsx
+
+# Large files
+*.zip
+*.tar.gz
+*.rar
+
+# Streamlit
+.streamlit/
+
+# FastAPI
+fastapi_cache/
+
+# ArXiv downloads
+arxiv_downloads/
+paper_cache/
+
+# Evaluation results
+evaluation/results/*.json
+evaluation/results/*.csv
+
+# Model outputs
+outputs/
+generations/
+predictions/
+
+# Experimental files
+experiments/
+temp/
+scratch/
