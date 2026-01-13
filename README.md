@@ -10,7 +10,12 @@ A comprehensive Question & Answer system for academic papers demonstrating multi
 - [ ] Create an interactive web interface showcasing all approaches
 - [ ] Deploy a production-ready system with performance monitoring
 
-## 📊 Dataset
+## � Current Status
+
+**Ugly MVP Complete** ✅  
+BM25 retrieval pipeline working on 1 paper (BERT). 22 chunks indexed with caching support. Next steps: full evaluation framework + expand to more papers.
+
+## �📊 Dataset
 
 **ArXiv Academic Papers**
 
@@ -22,11 +27,12 @@ A comprehensive Question & Answer system for academic papers demonstrating multi
 
 ## 🛠️ Implementation Approaches
 
-### Approach 1: Keyword Search (TF-IDF)
+### Approach 1: Keyword Search (BM25)
 
-- Traditional information retrieval with TF-IDF scoring
-- Key techniques: Term frequency, inverse document frequency, cosine similarity
+- Traditional information retrieval with BM25 ranking
+- Key techniques: BM25 scoring, document chunking, text preprocessing
 - Expected outcomes: Fast retrieval, good baseline performance
+- **Status**: Implemented (ugly MVP)
 
 ### Approach 2: Extractive Q&A (BERT)
 
