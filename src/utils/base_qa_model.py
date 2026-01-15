@@ -8,8 +8,14 @@ import time
 import logging
 from pathlib import Path
 import json
+import sys
 
-from ..utils.config import config
+# Add src to path
+src_path = Path(__file__).resolve().parent.parent
+if str(src_path) not in sys.path:
+    sys.path.insert(0, str(src_path))
+
+from utils.config import config
 
 
 class BaseQAModel(ABC):
@@ -28,6 +34,7 @@ class BaseQAModel(ABC):
         self.is_initialized = False
         self.logger = self._setup_logger()
         self.config = config
+        self.query_logger = None  # Optional query logger for tracking
         
         # Performance tracking
         self.response_times = []
@@ -88,6 +95,16 @@ class BaseQAModel(ABC):
             # Track performance
             self.response_times.append(response_time)
             self.total_queries += 1
+            
+            # Log query if logger is available
+            if hasattr(self, 'query_logger') and self.query_logger:
+                self.query_logger.log_query(
+                    question=question,
+                    retrieved_chunks=result.get('retrieved_chunks', []),
+                    response_time=response_time,
+                    top_k=result.get('num_chunks', 0),
+                    success=result.get('success', True)
+                )
             
             self.logger.info(
                 f"Question answered in {response_time:.2f}s using {self.name}"

@@ -1,1 +1,52 @@
-[]
+[
+    {
+        "question": "What is BERT?",
+        "paper_id": "1810.04805",
+        "relevant_keywords": ["bidirectional", "transformer", "pretraining", "language understanding"]
+    },
+    {
+        "question": "How does masked language modeling work?",
+        "paper_id": "1810.04805",
+        "relevant_keywords": ["mask", "token", "predict", "context", "bidirectional"]
+    },
+    {
+        "question": "What are the two pretraining tasks in BERT?",
+        "paper_id": "1810.04805",
+        "relevant_keywords": ["masked language model", "next sentence prediction", "MLM", "NSP"]
+    },
+    {
+        "question": "What is the architecture of BERT?",
+        "paper_id": "1810.04805",
+        "relevant_keywords": ["transformer", "encoder", "layers", "attention", "hidden"]
+    },
+    {
+        "question": "What problem does attention solve?",
+        "paper_id": "1706.03762",
+        "relevant_keywords": ["sequential", "parallelization", "dependencies", "recurrent"]
+    },
+    {
+        "question": "What is self-attention?",
+        "paper_id": "1706.03762",
+        "relevant_keywords": ["query", "key", "value", "attention mechanism", "sequence"]
+    },
+    {
+        "question": "What is multi-head attention?",
+        "paper_id": "1706.03762",
+        "relevant_keywords": ["multiple", "attention heads", "parallel", "subspaces", "concatenate"]
+    },
+    {
+        "question": "How does the transformer handle word position?",
+        "paper_id": "1706.03762",
+        "relevant_keywords": ["positional encoding", "sinusoidal", "position", "order"]
+    },
+    {
+        "question": "What is GraphIE?",
+        "paper_id": "1810.13083",
+        "relevant_keywords": ["graph", "information extraction", "framework", "entities", "relations"]
+    },
+    {
+        "question": "How does GraphIE represent documents?",
+        "paper_id": "1810.13083",
+        "relevant_keywords": ["graph structure", "nodes", "edges", "document representation"]
+    }
+]

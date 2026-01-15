@@ -13,7 +13,10 @@ from dataclasses import dataclass
 class DataConfig:
     """Data configuration settings."""
     raw_path: str = "data/raw/"
+    raw_data_path: str = "data/raw/"  # Alias for compatibility
     processed_path: str = "data/processed/"
+    processed_data_path: str = "data/processed/"  # Alias for compatibility
+    external_data_path: str = "data/external/"
     vector_store_path: str = "data/vector_store/"
     arxiv_categories: list = None
     max_papers: int = 1000
@@ -23,6 +26,11 @@ class DataConfig:
     def __post_init__(self):
         if self.arxiv_categories is None:
             self.arxiv_categories = ["cs.AI", "cs.LG", "cs.CL"]
+        # Sync aliases
+        if self.raw_data_path and not self.raw_path:
+            self.raw_path = self.raw_data_path
+        if self.processed_data_path and not self.processed_path:
+            self.processed_path = self.processed_data_path
 
 
 @dataclass
@@ -40,12 +48,16 @@ class ModelConfig:
 class EvaluationConfig:
     """Evaluation configuration settings."""
     test_questions_path: str = "evaluation/test_questions.json"
+    test_size: float = 0.2
     metrics: list = None
     output_path: str = "evaluation/results/"
+    human_eval: dict = None  # Optional human eval config
     
     def __post_init__(self):
         if self.metrics is None:
             self.metrics = ["rouge", "bleu", "bert_score", "semantic_similarity"]
+        if self.human_eval is None:
+            self.human_eval = {}
 
 
 class Config:
