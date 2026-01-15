@@ -1,15 +1,24 @@
-# TODO: Implement paper processor for ArXiv papers
+"""Paper processor for academic papers - handles BM25 indexing and retrieval."""
 import os
 from pathlib import Path
 from typing import List, Dict, Any
+import sys
 
 from rank_bm25 import BM25Okapi
 import re
 import json
 
-from text_preprocessor import clean_text, simple_tokenize
+# Add src to path
+src_path = Path(__file__).resolve().parent.parent
+if str(src_path) not in sys.path:
+    sys.path.insert(0, str(src_path))
 
-DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "processed"
+from data.text_preprocessor import clean_text, simple_tokenize
+
+# Use absolute paths relative to project root
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent
+DATA_DIR = PROJECT_ROOT / "data" / "processed"
 CHUNKS_JSON = DATA_DIR / "processed_chunks.json"
 INDEX_DIR = DATA_DIR / "bm25_index"
 
@@ -82,13 +91,38 @@ def process_papers(force_reprocess: bool = False) -> Dict[str, Any]:
         "bm25": bm25
     }
 
-def retrieve(query: str, index_data: Dict[str, Any], top_k: int = 5) -> List[str]:
+def retrieve(query: str, index_data: Dict[str, Any], top_k: int = 5, return_metadata: bool = False):
+    """
+    Retrieve relevant chunks for a query using BM25.
+    
+    Args:
+        query: Search query
+        index_data: BM25 index data
+        top_k: Number of results to return
+        return_metadata: If True, return dicts with metadata; if False, return just text
+        
+    Returns:
+        List of chunks (strings if return_metadata=False, dicts if True)
+    """
     tokenized_query = simple_tokenize(query)
 
     bm25 = index_data["bm25"]
     scores = bm25.get_scores(tokenized_query)
     top_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:top_k]
-    retrieved_chunks = [index_data["chunks"][i]["chunk"] for i in top_indices]
+    
+    if return_metadata:
+        # Return full chunk objects with metadata
+        retrieved_chunks = [
+            {
+                "chunk": index_data["chunks"][i]["chunk"],
+                "paper_id": index_data["chunks"][i].get("paper_id", "unknown"),
+                "score": float(scores[i])
+            }
+            for i in top_indices
+        ]
+    else:
+        # Return just the text (backward compatible)
+        retrieved_chunks = [index_data["chunks"][i]["chunk"] for i in top_indices]
 
     return retrieved_chunks
 

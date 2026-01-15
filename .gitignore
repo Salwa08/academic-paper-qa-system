@@ -62,6 +62,11 @@ data/raw/*.pdf
 data/raw/*.txt
 data/raw/*.json
 data/processed/*.json
+data/processed/*/*.md
+data/processed/*/*.jpeg
+data/processed/*/*.jpg
+data/processed/*/*.png
+data/temp_pdfs/*.pdf
 
 # API Keys and Secrets
 .env

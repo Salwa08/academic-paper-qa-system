@@ -1,264 +1,288 @@
 # Academic Paper Q&A System
 
-A comprehensive Question & Answer system for academic papers demonstrating multiple NLP approaches from basic keyword search to advanced RAG (Retrieval-Augmented Generation) systems.
+A progressively smarter Question & Answer system for AI research papers, building from traditional sparse retrieval to advanced RAG systems. Learning and building in public.
 
-## 🎯 Objectives
+**Public build log:** [X/Twitter threads](https://x.com/your-handle)
 
-- [ ] Compare 6 different Q&A approaches on academic papers
-- [ ] Demonstrate progression from traditional IR to modern RAG systems
-- [ ] Build a comprehensive evaluation framework for Q&A systems
-- [ ] Create an interactive web interface showcasing all approaches
-- [ ] Deploy a production-ready system with performance monitoring
+---
 
-## � Current Status
+## 🎯 Project Vision
 
-**Ugly MVP Complete** ✅  
-BM25 retrieval pipeline working on 1 paper (BERT). 22 chunks indexed with caching support. Next steps: full evaluation framework + expand to more papers.
+Building a production-quality Q&A system over research papers through iterative improvement:
 
-## �📊 Dataset
+- Start with simple, working baseline (BM25)
+- Add semantic understanding (embeddings + hybrid search)
+- Incorporate LLMs with grounding (RAG with citations)
+- Optimize for production (re-ranking, agentic flows, multimodal)
+- Deploy and monitor real usage
 
-**ArXiv Academic Papers**
+## 📍 Current Status: Phase 2 Starting
 
-- Description: Academic papers from computer science domains (AI, ML, NLP)
-- Source: ArXiv API (cs.AI, cs.LG, cs.CL categories)
-- Size: ~1,000-5,000 papers with abstracts and full text
-- Format: PDF text extraction, JSON metadata
-- License: Open access academic papers
+**Phase 1 Complete** ✅ | **Phase 2 In Progress** 🚧
 
-## 🛠️ Implementation Approaches
+---
 
-### Approach 1: Keyword Search (BM25)
+## 🗺️ Roadmap & Progress
 
-- Traditional information retrieval with BM25 ranking
-- Key techniques: BM25 scoring, document chunking, text preprocessing
-- Expected outcomes: Fast retrieval, good baseline performance
-- **Status**: Implemented (ugly MVP)
+### Phase 1 – Ugly MVP: BM25 Keyword Search ✅ (Completed Jan 2026)
 
-### Approach 2: Extractive Q&A (BERT)
+**Goal:** Traditional sparse retrieval baseline — fast and functional.
 
-- Neural extractive question answering using pre-trained BERT
-- Key techniques: BERT, transformer attention, span extraction
-- Expected outcomes: Precise answer extraction from context
+**Implementation:**
 
-### Approach 3: Similarity-based (Semantic Search)
+- BM25 scoring algorithm (rank-bm25)
+- Simple text chunking (500 tokens, 50 overlap)
+- Basic preprocessing (lowercase, tokenization)
+- 3 papers indexed: BERT, Attention Is All You Need, GraphIE
+- 49 chunks total
 
-- Semantic similarity using sentence embeddings
-- Key techniques: Sentence-BERT, semantic embeddings, vector similarity
-- Expected outcomes: Better semantic understanding than keyword search
+**Evaluation Results** (10 test questions, keyword-proxy relevance):
 
-### Approach 4: Simple RAG
+- **Hit Rate@3:** 70% — 7/10 questions found relevant keywords in top-3 chunks
+- **Avg Position:** 1.43 — When found, relevant info appeared very early
+- **Avg Response Time:** ~1ms — Blazing fast retrieval
 
-- Basic retrieval-augmented generation with LLM
-- Key techniques: Document retrieval + GPT generation, prompt engineering
-- Expected outcomes: Fluent, contextual answers with citations
+**Key Files:**
 
-### Approach 5: Advanced RAG
+- [src/approaches/01_keyword_search/keyword_qa.py](src/approaches/01_keyword_search/keyword_qa.py)
+- [evaluation/metrics_bm25.py](evaluation/metrics_bm25.py)
+- [evaluation/test_questions.json](evaluation/test_questions.json)
 
-- Optimized RAG with re-ranking and context optimization
-- Key techniques: Dense retrieval, re-ranking, chunk optimization, citation tracking
-- Expected outcomes: Production-quality Q&A with high accuracy
+**Outcome:** Fast, decent baseline. Relevant chunks usually rank early when hit. 30% misses highlight need for semantic understanding.
 
-### Approach 6: Fine-tuned Model
+**How to Run:**
 
-- Domain-specific fine-tuning on academic paper Q&A
-- Key techniques: Model fine-tuning, domain adaptation, transfer learning
-- Expected outcomes: Specialized performance on academic content
+```bash
+# Interactive CLI
+python main.py
 
-## 📈 Results
+# Run evaluation
+python evaluation/evaluate_bm25.py
 
-| Approach         | Accuracy | Response Time | BLEU Score | User Rating | Deployment Cost |
-| ---------------- | -------- | ------------- | ---------- | ----------- | --------------- |
-| Keyword Search   | 0.XX     | 0.1s          | 0.XX       | X.X/5       | $0/month        |
-| Extractive Q&A   | 0.XX     | 0.5s          | 0.XX       | X.X/5       | $5/month        |
-| Similarity-based | 0.XX     | 0.3s          | 0.XX       | X.X/5       | $10/month       |
-| Simple RAG       | 0.XX     | 2.0s          | 0.XX       | X.X/5       | $25/month       |
-| Advanced RAG     | 0.XX     | 3.5s          | 0.XX       | X.X/5       | $50/month       |
-| Fine-tuned       | 0.XX     | 1.0s          | 0.XX       | X.X/5       | $30/month       |
+# View query logs
+python evaluation/view_logs.py
+```
 
-## 🚀 Usage
+---
+
+### Phase 2 – Sectioned & Hybrid RAG 🚧 (Starting Now)
+
+**Goal:** Smarter chunking + hybrid retrieval for better semantic matching.
+
+**Planned Improvements:**
+
+- **Section-aware chunking:** Preserve markdown structure from marker-pdf extraction
+- **Dense embeddings:** Sentence-BERT (all-MiniLM-L6-v2) for semantic search
+- **Hybrid retrieval:** BM25 + semantic search with score fusion
+- **Basic re-ranking:** Optional cross-encoder for top results
+- **Better citations:** Chunk metadata with section/page references
+
+**Expected Outcomes:**
+
+- Hit Rate: 85-95% (up from 70%)
+- Better handling of semantic/paraphrased questions
+- Improved answer grounding with section context
+
+**Status:** In progress — starting with section-aware chunking + dense embedding integration
+
+**Branch:** `phase-2-hybrid-sectioned`
+
+---
+
+### Phase 3 – Advanced RAG + Agentic Extraction (Planned)
+
+**Goal:** Production-quality optimizations with multimodal support.
+
+**Key Techniques:**
+
+- Agentic parsing (tables, figures, equations — using DeepLearning.AI Document AI patterns)
+- Advanced re-ranking (Cohere Rerank or cross-encoder)
+- Context optimization (query rewriting, compression)
+- Full citation tracking (section + page + figure refs)
+- Simple agentic flow (LangGraph for query decomposition)
+
+**Expected Outcomes:**
+
+- Drastically lower hallucinations
+- Grounded, cited answers
+- Multimodal support (handle figures/tables/equations)
+
+**Status:** Planned after Phase 2 evaluation
+
+---
+
+### Phase 4 – Extractive + Fine-tuned (Longer Term)
+
+- Extractive Q&A with BERT-style span extraction
+- Domain-specific fine-tuning on paper Q&A pairs
+- **Status:** Future exploration
+
+---
+
+### Phase 5 – Full Production RAG (End Goal)
+
+- Complete pipeline: Simple RAG → Advanced RAG → Fine-tuned
+- Deployment (HuggingFace Spaces / FastAPI / mobile?)
+- Comprehensive evaluation (RAGAS, faithfulness, human feedback)
+- Real-time paper ingestion and updates
+- **Status:** Vision for production system
+
+---
+
+## 📊 Dataset
+
+**Current Papers (Phase 1):**
+
+- 1810.04805 - BERT: Pre-training of Deep Bidirectional Transformers
+- 1706.03762 - Attention Is All You Need
+- 1810.13083 - GraphIE: A Graph-Based Framework for Information Extraction
+- **Total chunks:** 49 (500 tokens each, 50 overlap)
+
+**Source:** ArXiv API (open access papers)
+
+---
+
+## 🛠️ Technical Stack
+
+**Current (Phase 1):**
+
+- `rank-bm25` - BM25 algorithm for sparse retrieval
+- `marker-pdf` - High-quality PDF to Markdown extraction
+- `pdfplumber` - Fallback PDF text extraction
+- `arxiv` - ArXiv API client
+
+**Planned (Phase 2+):**
+
+- `sentence-transformers` - Dense embeddings
+- `chromadb` / `faiss` - Vector database
+- `langchain` - RAG orchestration
+- `transformers` - LLM integration
+- `cohere` - Re-ranking (optional)
+
+---
+
+## � Quick Start
+
+### Installation
+
+```bash
+git clone https://github.com/Salwa08/academic-paper-qa-system.git
+cd q&a-system
+pip install -r requirements.txt
+```
+
+### Phase 1 Usage (BM25 System)
 
 ```python
-from src.approaches.advanced_rag import AdvancedRAGSystem
+from src.approaches.keyword_search.keyword_qa import KeywordSearchQA
 
-# Initialize the best performing system
-qa_system = AdvancedRAGSystem()
-
-# Load academic papers
-qa_system.load_documents('data/processed/arxiv_papers.json')
+# Initialize BM25 system
+qa_system = KeywordSearchQA()
+qa_system.initialize(top_k=3)
 
 # Ask a question
-question = "What are the main advantages of transformer models over RNNs?"
-answer = qa_system.answer(question)
+result = qa_system.answer_with_timing("What is BERT?")
 
-print(f"Answer: {answer.text}")
-print(f"Sources: {answer.sources}")
-print(f"Confidence: {answer.confidence}")
+print(f"Answer: {result['answer'][:200]}...")
+print(f"Retrieved {result['num_chunks']} chunks in {result['response_time']:.3f}s")
 ```
+
+### Run Interactive CLI
+
+```bash
+python main.py
+```
+
+### Run Evaluation
+
+```bash
+python evaluation/evaluate_bm25.py
+python evaluation/view_logs.py  # View query statistics
+```
+
+---
 
 ## 📁 Project Structure
 
 ```
 q&a-system/
-├── src/                           # Source code
-│   ├── approaches/                # Different Q&A approaches
-│   │   ├── 01_keyword_search/     # TF-IDF based search
-│   │   ├── 02_extractive_qa/      # BERT extractive Q&A
-│   │   ├── 03_similarity_based/   # Semantic similarity search
-│   │   ├── 04_simple_rag/         # Basic RAG implementation
-│   │   ├── 05_advanced_rag/       # Optimized RAG system
-│   │   └── 06_fine_tuned/         # Fine-tuned model approach
-│   ├── data/                      # Data processing utilities
-│   │   ├── arxiv_scraper.py       # ArXiv API integration
-│   │   ├── pdf_processor.py       # PDF text extraction
-│   │   └── data_preprocessor.py   # Text cleaning & chunking
-│   ├── utils/                     # Utility functions
-│   │   ├── evaluation_metrics.py  # Q&A evaluation metrics
-│   │   ├── vector_store.py        # Vector database management
-│   │   └── model_utils.py         # Model loading utilities
-│   └── web_interface/             # Web application
-│       ├── streamlit_app.py       # Main web interface
-│       ├── api.py                 # FastAPI backend
-│       └── components/            # UI components
-├── data/                          # Dataset files
-│   ├── raw/                       # Original ArXiv papers
-│   ├── processed/                 # Processed & chunked text
-│   └── external/                  # External datasets for evaluation
-├── notebooks/                     # Jupyter notebooks
-│   ├── exploratory/               # Data exploration
-│   │   ├── 01_arxiv_data_analysis.ipynb
-│   │   └── 02_text_preprocessing_analysis.ipynb
-│   ├── experiments/               # Approach experiments
-│   │   ├── 03_keyword_search_experiments.ipynb
-│   │   ├── 04_extractive_qa_experiments.ipynb
-│   │   ├── 05_similarity_experiments.ipynb
-│   │   ├── 06_rag_experiments.ipynb
-│   │   └── 07_fine_tuning_experiments.ipynb
-│   └── reports/                   # Final analysis
-│       └── 08_comparative_analysis.ipynb
-├── models/                        # Saved models & embeddings
-│   ├── saved_models/              # Trained/fine-tuned models
-│   ├── checkpoints/               # Training checkpoints
-│   └── exports/                   # Exported model files
-├── evaluation/                    # Evaluation framework
-│   ├── test_datasets/             # Evaluation datasets
-│   ├── metrics/                   # Evaluation scripts
-│   └── benchmarks/                # Performance benchmarks
-├── tests/                         # Tests
-│   ├── unit/                      # Unit tests
-│   └── integration/               # Integration tests
-├── docs/                          # Documentation
-│   ├── images/                    # Documentation images
-│   ├── reports/                   # Generated reports
-│   └── deployment/                # Deployment guides
-├── requirements.txt               # Dependencies
-├── config.yaml                    # Configuration
-├── .gitignore                     # Git ignore rules
-└── README.md                      # This file
+├── src/
+│   ├── approaches/
+│   │   └── 01_keyword_search/    # ✅ BM25 implementation
+│   │       └── keyword_qa.py
+│   ├── data/
+│   │   ├── arxiv_scraper.py      # Paper downloads
+│   │   ├── download_and_extract.py
+│   │   ├── paper_processor.py    # BM25 indexing
+│   │   └── text_preprocessor.py
+│   └── utils/
+│       ├── base_qa_model.py      # Base class for all approaches
+│       ├── config.py
+│       └── query_logger.py       # Query tracking
+├── data/
+│   ├── processed/
+│   │   └── processed_chunks.json # 49 chunks from 3 papers
+│   └── raw/pdfs/
+├── evaluation/
+│   ├── metrics_bm25.py           # Hit rate, avg position metrics
+│   ├── evaluate_bm25.py          # Evaluation script
+│   ├── test_questions.json       # 10 test questions
+│   ├── view_logs.py              # Query log viewer
+│   └── results/
+│       └── bm25_results.json
+├── logs/
+│   └── query_log.jsonl           # All queries tracked
+├── main.py                       # Interactive CLI
+├── config.yaml
+└── requirements.txt
 ```
 
-## 🔍 Key Learnings
+---
 
-1. **Traditional vs Modern NLP**: Evolution from TF-IDF to transformer-based approaches
-2. **RAG Architecture**: Understanding retrieval-augmented generation pipelines
-3. **Evaluation Challenges**: Difficulty in evaluating open-ended Q&A systems
-4. **Performance Trade-offs**: Accuracy vs speed vs cost considerations
-5. **Domain Adaptation**: Benefits of fine-tuning for specific domains
+## 🔍 Key Learnings (Phase 1)
 
-## 🎯 Future Improvements
+1. **BM25 is fast and effective** — 1ms retrieval, 70% hit rate for keyword-rich questions
+2. **Semantic gap matters** — 30% of questions need semantic understanding beyond keywords
+3. **Early ranking is good** — When BM25 finds relevant chunks, they rank in top 2 positions
+4. **Query logging is essential** — Understanding usage patterns guides next improvements
+5. **Good chunking matters** — 500 tokens with 50 overlap provides good context windows
 
-- [ ] Multi-modal Q&A (handling figures, tables, equations)
-- [ ] Conversational Q&A with context memory
-- [ ] Real-time paper ingestion pipeline
-- [ ] Advanced citation and source tracking
-- [ ] Integration with academic search engines
-- [ ] Mobile-friendly interface
+---
 
-## 📚 Technical Stack
+## 📈 Future Improvements
 
-**Core NLP Libraries:**
+**Phase 2 (Next):**
 
-- `transformers` - Hugging Face transformers for BERT, GPT models
-- `sentence-transformers` - Sentence embeddings
-- `langchain` - RAG pipeline orchestration
-- `faiss-cpu` - Efficient vector similarity search
-- `chromadb` - Vector database for embeddings
+- [ ] Section-aware chunking with markdown structure
+- [ ] Dense embeddings + hybrid search
+- [ ] Expand to 10+ papers for better evaluation
 
-**Data Processing:**
+**Phase 3+:**
 
-- `arxiv` - ArXiv API client
-- `PyPDF2` - PDF text extraction
-- `beautifulsoup4` - HTML parsing
-- `pandas` - Data manipulation
-- `numpy` - Numerical operations
+- [ ] Agentic parsing (tables, figures, equations)
+- [ ] Advanced re-ranking (Cohere/cross-encoder)
+- [ ] Multi-modal Q&A
+- [ ] Conversational memory
+- [ ] Web interface (Streamlit/FastAPI)
+- [ ] Real-time paper updates
 
-**Web Interface:**
+---
 
-- `streamlit` - Interactive web interface
-- `fastapi` - REST API backend
-- `plotly` - Interactive visualizations
-- `gradio` - ML model interfaces
+## 🤝 Contributing
 
-**Evaluation:**
+This is a learning project built in public. Feedback, suggestions, and contributions welcome!
 
-- `nltk` - Text processing and BLEU scores
-- `rouge-score` - ROUGE evaluation metrics
-- `scikit-learn` - Classification metrics
-- `seaborn` - Statistical visualizations
+---
 
-## 📊 Evaluation Metrics
+## 📝 License
 
-- **Accuracy**: Manual evaluation on test questions
-- **BLEU Score**: N-gram overlap with reference answers
-- **ROUGE Score**: Recall-oriented evaluation
-- **Semantic Similarity**: Cosine similarity with reference answers
-- **Response Time**: Average query processing time
-- **Citation Quality**: Accuracy of source attribution
-
-## 🚀 Quick Start
-
-1. **Clone and setup:**
-
-```bash
-git clone <repository-url>
-cd q&a-system
-pip install -r requirements.txt
-```
-
-2. **Download and process data:**
-
-```bash
-python src/data/arxiv_scraper.py --categories cs.AI cs.LG cs.CL --max_papers 1000
-python src/data/data_preprocessor.py --input data/raw --output data/processed
-```
-
-3. **Run experiments:**
-
-```bash
-# Start with keyword search
-python src/approaches/01_keyword_search/keyword_search.py
-
-# Try advanced RAG
-python src/approaches/05_advanced_rag/advanced_rag.py
-```
-
-4. **Launch web interface:**
-
-```bash
-streamlit run src/web_interface/streamlit_app.py
-```
-
-## 📈 Performance Benchmarks
-
-System tested on:
-
-- **Dataset**: 5,000 ArXiv papers (CS domains)
-- **Hardware**: Intel i7, 16GB RAM, GPU optional
-- **Test Questions**: 100 manually curated academic questions
-- **Evaluation**: Human experts + automated metrics
+MIT License - See LICENSE file for details
 
 ---
 
 **Part of:** [AI Journey 365](https://github.com/Salwa08/ai-journey-365)  
 **Author:** Salwa Khattami  
-**Date:** August 18, 2025  
-**Status:** In Development 🚧
+**Started:** January 2026  
+**Status:** Phase 2 In Progress 🚧
+
+**Current Focus:** Finishing Phase 1 documentation → Starting Phase 2 (section-aware chunking + hybrid retrieval)
