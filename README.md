@@ -2,7 +2,7 @@
 
 A progressively smarter Question & Answer system for AI research papers, building from traditional sparse retrieval to advanced RAG systems. Learning and building in public.
 
-**Public build log:** [X/Twitter threads](https://x.com/your-handle)
+**Public build log:** [X/Twitter threads](https://x.com/Salma70330363)
 
 ---
 

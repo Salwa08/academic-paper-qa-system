@@ -7,6 +7,7 @@ import sys
 from rank_bm25 import BM25Okapi
 import re
 import json
+from chunking import SimpleChunker
 
 # Add src to path
 src_path = Path(__file__).resolve().parent.parent
@@ -22,16 +23,7 @@ DATA_DIR = PROJECT_ROOT / "data" / "processed"
 CHUNKS_JSON = DATA_DIR / "processed_chunks.json"
 INDEX_DIR = DATA_DIR / "bm25_index"
 
-def chunk_text(text: str, chunk_size: int = 500, overlap: int = 50) -> List[str]:
-    words = simple_tokenize(text)
-    chunks = []
-    step = chunk_size - overlap
-    for i in range(0, len(words), step):
-        chunk_words = words[i:i + chunk_size]
-        if len(chunk_words) < 30:
-            continue
-        chunks.append(" ".join(chunk_words))
-    return chunks
+chunker = SimpleChunker()
 
 def process_papers(force_reprocess: bool = False) -> Dict[str, Any]:
     """
@@ -68,7 +60,7 @@ def process_papers(force_reprocess: bool = False) -> Dict[str, Any]:
         with open(paper_file, 'r', encoding='utf-8') as f:
             raw = f.read()
         cleaned_text = clean_text(raw)
-        paper_chunks = chunk_text(cleaned_text)
+        paper_chunks = chunker.chunk_text(cleaned_text)
         for chunk in paper_chunks:
             chunks.append({
                 "paper_id": paper_file.stem,  # Use file stem as paper ID
