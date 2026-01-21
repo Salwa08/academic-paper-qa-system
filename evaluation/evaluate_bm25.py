@@ -11,10 +11,10 @@ import json
 approaches_path = PROJECT_ROOT / "src" / "approaches" / "01_keyword_search"
 sys.path.insert(0, str(approaches_path))
 
-from metrics_bm25 import evaluate_bm25
+from .metrics_bm25 import evaluate_bm25
 from keyword_qa import KeywordSearchQA
 
-def evaluate_bm25_system():
+def evaluate_bm25_system(section_boosts: dict = None) -> dict:
     """Evaluate the BM25 Q&A system on test questions."""
     # Load configuration
     test_questions_path = Path(__file__).parent / "test_questions.json"
@@ -31,7 +31,7 @@ def evaluate_bm25_system():
     qa_system = KeywordSearchQA()
     qa_system.initialize(top_k=3)
     # Evaluate
-    metrics = evaluate_bm25(qa_system, test_questions, relevant_keywords)
+    metrics = evaluate_bm25(qa_system, test_questions, relevant_keywords, section_boosts=section_boosts)
     # Save results
     with open(output_path, 'w') as f:
         json.dump(metrics, f, indent=4)
@@ -45,4 +45,11 @@ def evaluate_bm25_system():
     return metrics
 
 if __name__ == "__main__":
+    # Evaluate BM25 system without section boosts
+    print("Evaluating BM25 without section boosts...")
     evaluate_bm25_system()
+    print("\n" + "="*40 + "\n")
+    print("\nEvaluating BM25 with section boosts...")
+    # Evaluate BM25 system with section boosts
+    section_boosts = {"method": 1.5, "experiments": 1.3, "introduction": 0.8}
+    evaluate_bm25_system(section_boosts=section_boosts)

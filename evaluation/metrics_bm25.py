@@ -6,13 +6,14 @@
 # Response time: How fast was retrieval?
 
 
-def evaluate_bm25(qa_system, test_questions, relevant_keywords):
+def evaluate_bm25(qa_system, test_questions, relevant_keywords, section_boosts=None):
     """Evaluate BM25 Q&A system using test questions and relevant keywords.
     
     Args:
         qa_system: Initialized BM25 Q&A system.
         test_questions: List of test questions.
         relevant_keywords: Dict mapping questions to relevant keywords.
+        section_boosts: Optional dict mapping section types to boost factors.
     
     Returns:
         Dict with evaluation metrics.
@@ -24,18 +25,25 @@ def evaluate_bm25(qa_system, test_questions, relevant_keywords):
     total_response_time = 0.0
 
     for question in test_questions:
-        result = qa_system.answer_with_timing(question, top_k=3)
-        answer = result['answer']
+        result = qa_system.answer_with_timing(question, top_k=3, section_boosts=section_boosts)
+        retrieved_chunks = result.get('retrieved_chunks', [])
         response_time = result['response_time']
         total_response_time += response_time
         keywords = relevant_keywords.get(question, [])
         hit = False
         position = 4  # Default to 4 (not found in top-3)
-        for idx, keyword in enumerate(keywords):
-            if keyword.lower() in answer.lower():
-                hit = True
-                position = idx + 1
+        
+        # Check all retrieved chunks (top-3), not just the answer
+        for chunk_idx, chunk_data in enumerate(retrieved_chunks, 1):
+            chunk_text = chunk_data['chunk'] if isinstance(chunk_data, dict) else chunk_data
+            for keyword in keywords:
+                if keyword.lower() in chunk_text.lower():
+                    hit = True
+                    position = chunk_idx
+                    break
+            if hit:
                 break
+        
         if hit:
             hit_count += 1
             total_position += position

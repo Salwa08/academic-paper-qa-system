@@ -29,20 +29,21 @@ class KeywordSearchQA(BaseQAModel):
         self.top_k = 5
         self.query_logger = QueryLogger() if enable_logging else None
     
-    def initialize(self, top_k: int = 5, force_reprocess: bool = False, **kwargs) -> None:
+    def initialize(self, top_k: int = 5, force_reprocess: bool = False, chunker=None, **kwargs) -> None:
         """
         Initialize the BM25 index.
         
         Args:
             top_k: Number of top results to retrieve
             force_reprocess: Whether to force reprocessing of papers
+            chunker: Optional chunker instance to use for processing papers
         """
         self.logger.info("Initializing BM25 Keyword Search model...")
         self.top_k = top_k
         
         try:
             # Load or build the BM25 index
-            self.index_data = process_papers(force_reprocess=force_reprocess)
+            self.index_data = process_papers(force_reprocess=force_reprocess, chunker=chunker)
             
             if not self.index_data or not self.index_data.get("chunks"):
                 raise ValueError("No chunks available in the index")
@@ -55,14 +56,14 @@ class KeywordSearchQA(BaseQAModel):
             self.logger.error(f"Failed to initialize BM25 index: {e}")
             raise
     
-    def answer_question(self, question: str, top_k: Optional[int] = None, **kwargs) -> Dict[str, Any]:
+    def answer_question(self, question: str, top_k: Optional[int] = None, section_boosts: Optional[Dict[str, Any]] = None, **kwargs) -> Dict[str, Any]:
         """
         Answer a question using BM25 retrieval.
         
         Args:
             question: The question to answer
             top_k: Number of results to return (overrides default)
-            
+            section_boosts: Optional dictionary mapping section types to boost factors
         Returns:
             Dictionary with answer, retrieved chunks, and metadata
         """
@@ -73,7 +74,7 @@ class KeywordSearchQA(BaseQAModel):
         
         try:
             # Retrieve relevant chunks with metadata for logging
-            retrieved_chunks = retrieve(question, self.index_data, top_k=k, return_metadata=True)
+            retrieved_chunks = retrieve(question, self.index_data, top_k=k, return_metadata=True, section_boosts=section_boosts)
             
             # Extract just text for formatting answer
             chunk_texts = [chunk["chunk"] if isinstance(chunk, dict) else chunk for chunk in retrieved_chunks]

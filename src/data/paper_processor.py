@@ -12,8 +12,8 @@ if str(src_path) not in sys.path:
 from rank_bm25 import BM25Okapi
 import re
 import json
-from chunking import SimpleChunker, SectionAwareChunker
-from text_preprocessor import clean_text, simple_tokenize
+from .chunking import SimpleChunker, SectionAwareChunker
+from .text_preprocessor import clean_text, simple_tokenize
 
 # Use absolute paths relative to project root
 SCRIPT_DIR = Path(__file__).resolve().parent
