@@ -6,7 +6,7 @@ Supports simple token-based and section-aware chunking.
 from typing import List, Union, Dict, Any
 import re
 
-from src.data.text_preprocessor import simple_tokenize
+from text_preprocessor import simple_tokenize
 from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
 
 class BaseChunker:
