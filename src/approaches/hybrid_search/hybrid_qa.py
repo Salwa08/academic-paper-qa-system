@@ -11,7 +11,7 @@ from utils.query_logger import QueryLogger
 
 class HybridQA(BaseQAModel):
     def __init__(self, enable_logging: bool = True):
-        super().__init__(name="Dense_Embeddings_SBERT", description="Semantic search using Sentence-BERT embeddings and ChromaDB")
+        super().__init__(name="Hybrid_BM25_Dense", description="Hybrid search combining BM25 and Sentence-BERT embeddings")
         self.model = None
         self.collection = None
         self.chunks_data = None
@@ -19,18 +19,22 @@ class HybridQA(BaseQAModel):
         self.chunk_to_metadata = None
         self.query_logger = QueryLogger() if enable_logging else None
 
-    def initialize(self,top_k: int = 5, chroma_path:str = "./chroma_ai_papers" , chunker_type: str = "section_aware", **kwargs):
+    def initialize(self, top_k: int = 5, chroma_path: str = "./chroma_ai_papers", chunker=None, force_reprocess: bool = False, **kwargs):
         self.top_k = top_k
         self.model = SentenceTransformer("all-MiniLM-L6-v2")
+        
+        if chunker is None:
+            chunker = SectionAwareChunker()
+        chunker_type = "section_aware" if isinstance(chunker, SectionAwareChunker) else "simple"
+        
+        chroma_path = f"{chroma_path}_{chunker_type}"
         self.chroma_client = chromadb.PersistentClient(path=chroma_path)
         self.collection = self.chroma_client.get_or_create_collection(
-        name="ai_papers",
-        metadata={"hnsw:space": "cosine"}  
+            name="ai_papers",
+            metadata={"hnsw:space": "cosine"}  
         )
         
-
-        chunker = SectionAwareChunker() if chunker_type == "section_aware" else SimpleChunker()
-        self.bm25_data = process_papers(force_reprocess=False, chunker=chunker)
+        self.bm25_data = process_papers(force_reprocess=force_reprocess, chunker=chunker)
         
         chunks_path = Path(f"data/processed/processed_chunks_{chunker_type}.json")
         if not chunks_path.exists():
@@ -52,24 +56,27 @@ class HybridQA(BaseQAModel):
         self.is_initialized = True
     
 
-    def answer_question(self, question: str, top_k: Optional[int] = None, alpha: float = 0.5, beta: float = 0.5, **kwargs):
+    def answer_question(self, question: str, top_k: Optional[int] = None, alpha: float = 0.4, beta: float = 0.6, **kwargs):
         k = top_k or self.top_k
         
+        # Retrieve more candidates for better fusion
+        retrieve_k = max(k * 3, 15)
+        
         # Dense Retrieval
-        query_embedding = self.model.encode([question]).tolist()[0]  # Get vector
-        results = self.collection.query(query_embeddings=[query_embedding], n_results=k)  # Fixed: was [query_embedding]
+        query_embedding = self.model.encode([question]).tolist()[0]
+        results = self.collection.query(query_embeddings=[query_embedding], n_results=retrieve_k)
         
         dense_chunks = [
             {'chunk': doc, 'metadata': meta, 'distance': dist} 
             for doc, meta, dist in zip(results['documents'][0], results['metadatas'][0], results['distances'][0])
         ]
-        dense_scores = {chunk['chunk']: 1 - chunk['distance'] for chunk in dense_chunks}  # Similarity
+        dense_scores = {chunk['chunk']: 1 - chunk['distance'] for chunk in dense_chunks}
         
         # BM25 Retrieval
-        bm25_results = retrieve(question, self.bm25_data, top_k=k, return_metadata=True)
+        bm25_results = retrieve(question, self.bm25_data, top_k=retrieve_k, return_metadata=True)
         bm25_scores = {res['chunk']: res['score'] for res in bm25_results}
         
-        # Fuse scores for unique chunks
+        # Fuse scores
         fused_results = []
         all_chunks = set(dense_scores.keys()) | set(bm25_scores.keys())
         for chunk_text in all_chunks:
