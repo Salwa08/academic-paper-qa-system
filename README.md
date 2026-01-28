@@ -183,7 +183,7 @@ python main.py
 
 ---
 
-## � Quick Start
+## 🚀 Quick Start
 
 ### Installation
 
@@ -237,14 +237,11 @@ python evaluation/evaluate_hybrid.py
 python evaluation/view_logs.py
 ```
 
-```
-
 ---
 
 ## 📁 Project Structure
 
 ```
-
 q&a-system/
 ├── src/
 │ ├── approaches/
@@ -281,7 +278,6 @@ q&a-system/
 ├── main.py # Interactive CLI
 ├── config.yaml
 └── requirements.txt
-
 ```
 
 ---
@@ -337,4 +333,3 @@ MIT License - See LICENSE file for details
 **Status:** Phase 2 Complete ✅, Phase 3 Starting 🚧
 
 **Current Focus:** Phase 2 documentation complete → Starting Phase 3 (LLM integration + advanced RAG)
-```
