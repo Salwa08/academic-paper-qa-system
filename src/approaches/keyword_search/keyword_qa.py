@@ -160,7 +160,7 @@ def main():
         print("-" * 60)
         print(result["answer"][:500] + "...")
         
-        print(f"\n📊 Retrieved {result['num_chunks']} chunks in {result['response_time']:.3f}s")
+        print(f"\n Retrieved {result['num_chunks']} chunks in {result['response_time']:.3f}s")
     
     # Print stats
     print("\n" + "=" * 60)

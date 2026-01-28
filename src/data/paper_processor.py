@@ -19,7 +19,6 @@ from .text_preprocessor import clean_text, simple_tokenize
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent
 DATA_DIR = PROJECT_ROOT / "data" / "processed"
-CHUNKS_JSON = DATA_DIR / "processed_chunks.json"
 INDEX_DIR = DATA_DIR / "bm25_index"
 
 def process_papers(force_reprocess: bool = False, chunker = None) -> Dict[str, Any]:
@@ -34,6 +33,10 @@ def process_papers(force_reprocess: bool = False, chunker = None) -> Dict[str, A
     if chunker is None:
         chunker = SimpleChunker()
     
+    # Determine chunker_type and set CHUNKS_JSON based on chunker type
+    chunker_type = "section_aware" if isinstance(chunker, SectionAwareChunker) else "simple"
+    CHUNKS_JSON = DATA_DIR / f"processed_chunks_{chunker_type}.json"
+    
     if CHUNKS_JSON.exists() and not force_reprocess:
         print("Loading existing chunks...")
         with open(CHUNKS_JSON, 'r', encoding='utf-8') as f:
@@ -43,7 +46,8 @@ def process_papers(force_reprocess: bool = False, chunker = None) -> Dict[str, A
         bm25 = BM25Okapi(tokenized_corpus)
         return {
             "chunks": chunks,
-            "bm25": bm25
+            "bm25": bm25,
+            "chunker_type": chunker_type
         }
     
     print("Processing papers...")
@@ -53,7 +57,7 @@ def process_papers(force_reprocess: bool = False, chunker = None) -> Dict[str, A
     
     if not md_files:
         print("No markdown files found!")
-        return {"chunks": [], "bm25": None}
+        return {"chunks": [], "bm25": None, "chunker_type": chunker_type}
     
     for paper_file in md_files:
         print(f"Processing {paper_file.name}...")
@@ -73,7 +77,6 @@ def process_papers(force_reprocess: bool = False, chunker = None) -> Dict[str, A
                 chunks.append({
                     "paper_id": paper_file.stem,  # Use file stem as paper ID
                     "chunk": chunk,
-                    "section_type": "other",
                 })
             else: # Phase 2: section-aware chunks
                 chunks.append({
@@ -95,7 +98,8 @@ def process_papers(force_reprocess: bool = False, chunker = None) -> Dict[str, A
 
     return {
         "chunks": chunks,
-        "bm25": bm25
+        "bm25": bm25,
+        "chunker_type": chunker_type
     }
 
 def retrieve(query: str, index_data: Dict[str, Any], top_k: int = 5, return_metadata: bool = False, section_boosts: Optional[Dict[str, Any]] = None) -> List[Any]:
@@ -130,7 +134,8 @@ def retrieve(query: str, index_data: Dict[str, Any], top_k: int = 5, return_meta
             {
                 "chunk": index_data["chunks"][i]["chunk"],
                 "paper_id": index_data["chunks"][i].get("paper_id", "unknown"),
-                "score": float(scores[i])
+                "score": float(scores[i]),
+                "section_type": index_data["chunks"][i].get("section_type", "other")
             }
             for i in top_indices
         ]
@@ -144,31 +149,40 @@ def retrieve(query: str, index_data: Dict[str, Any], top_k: int = 5, return_meta
 # Quick testing
 if __name__ == "__main__":
     print("=" * 60)
-    print("Testing Phase 2: Section-Aware Chunking + Score Boosting")
+    print("Generating Both Chunk Types: Simple and Section-Aware")
     print("=" * 60)
     
-    # Process papers with section-aware chunking
-    index_data = process_papers(force_reprocess=True, chunker=SectionAwareChunker())
+    # Generate simple chunks (Phase 1 style)
+    print("\n--- Processing with Simple Chunker ---")
+    simple_data = process_papers(force_reprocess=True, chunker=SimpleChunker())
+    print(f"Simple chunks saved to: processed_chunks_simple.json ({len(simple_data['chunks'])} chunks)")
     
-    # Test query about architecture (should boost "method" sections)
+    # Generate section-aware chunks (Phase 2 style)
+    print("\n--- Processing with Section-Aware Chunker ---")
+    section_data = process_papers(force_reprocess=True, chunker=SectionAwareChunker())
+    print(f"Section-aware chunks saved to: processed_chunks_section_aware.json ({len(section_data['chunks'])} chunks)")
+    
+    # Test query on section-aware data
     query = "What is the BERT architecture?"
-    print(f"\nQuery: {query}")
+    print(f"\nTesting query on section-aware data: {query}")
     
     # Test WITHOUT section boosting
     print("\n--- WITHOUT section boosting ---")
-    results_no_boost = retrieve(query, index_data, top_k=3, return_metadata=True)
+    results_no_boost = retrieve(query, section_data, top_k=3, return_metadata=True)
     for i, res in enumerate(results_no_boost, 1):
         print(f"\nResult {i}:")
         print(f"  Paper: {res['paper_id']}")
         print(f"  Score: {res['score']:.2f}")
+        print(f"  Section: {res['section_type']}")
         print(f"  Preview: {res['chunk'][:150]}...")
     
-    # Test WITH section boosting (boost method sections for architecture questions)
-    print("\n\n--- WITH section boosting (method sections x1.5) ---")
+    # Test WITH section boosting
+    print("\n--- WITH section boosting (method x1.5) ---")
     section_boosts = {"method": 1.5, "introduction": 0.8}
-    results_with_boost = retrieve(query, index_data, top_k=3, return_metadata=True, section_boosts=section_boosts)
+    results_with_boost = retrieve(query, section_data, top_k=3, return_metadata=True, section_boosts=section_boosts)
     for i, res in enumerate(results_with_boost, 1):
         print(f"\nResult {i}:")
         print(f"  Paper: {res['paper_id']}")
         print(f"  Score: {res['score']:.2f}")
+        print(f"  Section: {res['section_type']}")
         print(f"  Preview: {res['chunk'][:150]}...")

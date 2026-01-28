@@ -14,7 +14,7 @@ sys.path.insert(0, str(approaches_path))
 from .metrics_bm25 import evaluate_bm25
 from keyword_qa import KeywordSearchQA
 
-def evaluate_bm25_system(section_boosts: dict = None) -> dict:
+def evaluate_bm25_system(section_boosts: dict = None, chunker=None, force_reprocess: bool = False) -> dict:
     """Evaluate the BM25 Q&A system on test questions."""
     # Load configuration
     test_questions_path = Path(__file__).parent / "test_questions.json"
@@ -29,7 +29,7 @@ def evaluate_bm25_system(section_boosts: dict = None) -> dict:
     relevant_keywords = {item['question']: item.get('relevant_keywords', []) for item in test_data}
     # Initialize BM25 Q&A system
     qa_system = KeywordSearchQA()
-    qa_system.initialize(top_k=3)
+    qa_system.initialize(top_k=3, chunker=chunker, force_reprocess=force_reprocess)
     # Evaluate
     metrics = evaluate_bm25(qa_system, test_questions, relevant_keywords, section_boosts=section_boosts)
     # Save results
@@ -45,11 +45,21 @@ def evaluate_bm25_system(section_boosts: dict = None) -> dict:
     return metrics
 
 if __name__ == "__main__":
-    # Evaluate BM25 system without section boosts
-    print("Evaluating BM25 without section boosts...")
-    evaluate_bm25_system()
-    print("\n" + "="*40 + "\n")
-    print("\nEvaluating BM25 with section boosts...")
-    # Evaluate BM25 system with section boosts
+    from keyword_qa import KeywordSearchQA
+    from src.data.chunking import SimpleChunker, SectionAwareChunker
+    
+    print("="*60)
+    print("Phase 1: Simple Chunking (Baseline)")
+    print("="*60)
+    evaluate_bm25_system(section_boosts=None, chunker=SimpleChunker(), force_reprocess=True)
+    
+    print("\n" + "="*60)
+    print("Phase 2a: Section-Aware Chunking (NO boost)")
+    print("="*60)
+    evaluate_bm25_system(section_boosts=None, chunker=SectionAwareChunker(), force_reprocess=True)
+    
+    print("\n" + "="*60)
+    print("Phase 2a: Section-Aware + Boosting")
+    print("="*60)
     section_boosts = {"method": 1.5, "experiments": 1.3, "introduction": 0.8}
-    evaluate_bm25_system(section_boosts=section_boosts)
+    evaluate_bm25_system(section_boosts=section_boosts, chunker=SectionAwareChunker())
