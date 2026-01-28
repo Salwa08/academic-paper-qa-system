@@ -89,7 +89,7 @@ python evaluation/view_logs.py
 
 - **Simple Chunking:** 92% hit rate, avg position 1.33
 - **Section-Aware (No Boost):** 62% hit rate, avg position 1.50
-- **Section-Aware (With Boost):** 62% hit rate, avg position 1.50
+- **Section-Aware (With Boost):** 62% hit rate, avg position 1.88
 
 **Key Files:**
 
@@ -102,7 +102,6 @@ python evaluation/view_logs.py
 
 **Optional Phase 2 Enhancements:**
 
-- Add section boosting to hybrid search (currently BM25-only)
 - Implement cross-encoder re-ranking for top results
 
 **How to Run:**

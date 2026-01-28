@@ -56,7 +56,7 @@ class HybridQA(BaseQAModel):
         self.is_initialized = True
     
 
-    def answer_question(self, question: str, top_k: Optional[int] = None, alpha: float = 0.4, beta: float = 0.6, **kwargs):
+    def answer_question(self, question: str, top_k: Optional[int] = None, alpha: float = 0.4, beta: float = 0.6, section_boosts: Optional[Dict[str, float]] = None, **kwargs):
         k = top_k or self.top_k
         
         # Retrieve more candidates for better fusion
@@ -83,6 +83,14 @@ class HybridQA(BaseQAModel):
             dense_score = dense_scores.get(chunk_text, 0.0)
             bm25_score = bm25_scores.get(chunk_text, 0.0)
             fused_score = alpha * bm25_score + beta * dense_score
+            
+            # Apply section boosting if provided
+            if section_boosts:
+                metadata = self.chunk_to_metadata.get(chunk_text, {'paper_id': 'unknown', 'section_type': 'other'})
+                section_type = metadata.get('section_type', 'other')
+                boost = section_boosts.get(section_type, 1.0)
+                fused_score *= boost
+            
             metadata = self.chunk_to_metadata.get(chunk_text, {'paper_id': 'unknown', 'section_type': 'other'})
             fused_results.append({
                 'chunk': chunk_text,

@@ -87,6 +87,8 @@ wandb/
 *.faiss
 *.index
 chroma_db/
+chroma_ai_papers*/
+chroma_ai_papers_*
 
 # Cache files
 .cache/
