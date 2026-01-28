@@ -86,6 +86,7 @@ wandb/
 # Vector databases
 *.faiss
 *.index
+*.sqlite3
 chroma_db/
 chroma_ai_papers*/
 chroma_ai_papers_*
