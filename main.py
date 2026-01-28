@@ -1,6 +1,6 @@
 """
 Main entry point for the Academic Paper Q&A System.
-Ugly MVP - Phase 1: BM25-based retrieval on BERT paper.
+Phase 2: Hybrid BM25 + Dense retrieval with section-aware chunking.
 """
 
 import sys
@@ -10,31 +10,78 @@ from pathlib import Path
 src_path = Path(__file__).resolve().parent / "src"
 sys.path.insert(0, str(src_path))
 
-# Import directly - note folder is 01_keyword_search
-sys.path.insert(0, str(src_path / "approaches" / "01_keyword_search"))
+# Import approaches
+sys.path.insert(0, str(src_path / "approaches" / "keyword_search"))
+sys.path.insert(0, str(src_path / "approaches" / "hybrid_search"))
 from keyword_qa import KeywordSearchQA
+from hybrid_qa import HybridQA
+from src.data.chunking import SimpleChunker, SectionAwareChunker
 
 
 def main():
     """
-    Run the ugly MVP Q&A system.
+    Run the Academic Paper Q&A System.
     
-    Phase 1 Goal: Demonstrate BM25-based retrieval working end-to-end
-    on the BERT paper with a simple interactive Q&A interface.
+    Phase 2: Support for both BM25 and Hybrid (BM25 + Dense) retrieval
+    with choice of chunking strategies.
     """
     print("\n" + "=" * 70)
-    print("📚 ACADEMIC PAPER Q&A SYSTEM - UGLY MVP (Phase 1)")
+    print("📚 ACADEMIC PAPER Q&A SYSTEM - PHASE 2 COMPLETE")
     print("=" * 70)
-    print("Approach: BM25 Keyword Search")
-    print("Dataset: BERT paper (1810.04805)")
+    print("Available Approaches:")
+    print("  1. BM25 Keyword Search (Phase 1)")
+    print("  2. Hybrid Search (BM25 + Dense embeddings)")
     print("=" * 70 + "\n")
     
-    # Initialize the BM25 Q&A system
-    print("🔧 Initializing BM25 retrieval system...")
-    qa_system = KeywordSearchQA()
-    qa_system.initialize(top_k=3)
+    # Choose approach
+    while True:
+        try:
+            approach_choice = input("Choose approach (1 or 2): ").strip()
+            if approach_choice == "1":
+                approach_name = "BM25 Keyword Search"
+                qa_system = KeywordSearchQA()
+                break
+            elif approach_choice == "2":
+                approach_name = "Hybrid BM25 + Dense"
+                qa_system = HybridQA()
+                break
+            else:
+                print("Please enter 1 or 2.")
+        except KeyboardInterrupt:
+            print("\n👋 Goodbye!")
+            return
     
-    print("\n✅ System ready! You can now ask questions about the BERT paper.\n")
+    print(f"\nSelected: {approach_name}")
+    print("\n" + "=" * 70)
+    print("Available Chunking Strategies:")
+    print("  1. Simple Chunking (500 tokens, 50 overlap)")
+    print("  2. Section-Aware Chunking (preserves markdown structure)")
+    print("=" * 70 + "\n")
+    
+    # Choose chunking
+    while True:
+        try:
+            chunking_choice = input("Choose chunking (1 or 2): ").strip()
+            if chunking_choice == "1":
+                chunker = SimpleChunker()
+                chunking_name = "Simple Chunking"
+                break
+            elif chunking_choice == "2":
+                chunker = SectionAwareChunker()
+                chunking_name = "Section-Aware Chunking"
+                break
+            else:
+                print("Please enter 1 or 2.")
+        except KeyboardInterrupt:
+            print("\n👋 Goodbye!")
+            return
+    
+    print(f"\nSelected: {chunking_name}")
+    print("Dataset: 3 academic papers (BERT, Attention Is All You Need, GraphIE)")
+    print("\n🔧 Initializing system...")
+    qa_system.initialize(top_k=3, chunker=chunker)
+    
+    print("\n✅ System ready! You can now ask questions about the academic papers.\n")
     print("Example questions:")
     print("  - What is BERT?")
     print("  - How does masked language modeling work?")
@@ -91,12 +138,16 @@ def main():
     stats = qa_system.get_performance_stats()
     config = qa_system.get_model_config()
     
+    print(f"Approach: {approach_name}")
+    print(f"Chunking: {chunking_name}")
     print(f"Total questions asked: {qa_system.total_queries}")
     print(f"Average response time: {stats.get('avg_response_time', 0):.3f}s")
-    print(f"Chunks indexed: {config['num_chunks_indexed']}")
-    print(f"Retrieval algorithm: {config['algorithm']}")
+    if 'num_chunks_indexed' in config:
+        print(f"Chunks indexed: {config['num_chunks_indexed']}")
+    if 'embedding_model' in config:
+        print(f"Embedding model: {config['embedding_model']}")
     print("=" * 70)
-    print("\n✨ Thanks for using the Q&A system! MVP Phase 1 complete.\n")
+    print("\n✨ Thanks for using the Q&A system! Phase 2 complete.\n")
 
 
 if __name__ == "__main__":

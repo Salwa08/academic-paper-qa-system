@@ -48,5 +48,20 @@
         "question": "How does GraphIE represent documents?",
         "paper_id": "1810.13083",
         "relevant_keywords": ["graph structure", "nodes", "edges", "document representation"]
+    },
+    {
+        "question": "What types of nodes are used in GraphIE?",
+        "paper_id": "1810.13083",
+        "relevant_keywords": ["word nodes", "entity nodes", "mention nodes", "type nodes"]
+    },
+    {
+        "question": "How does GraphIE perform inference?",
+        "paper_id": "1810.13083",
+        "relevant_keywords": ["graph neural network", "message passing", "node representation"]
+    },
+    {
+        "question": "What datasets were used to evaluate GraphIE?",
+        "paper_id": "1810.13083",
+        "relevant_keywords": ["ACE2005", "CoNLL04", "information extraction", "benchmark"]
     }
 ]
