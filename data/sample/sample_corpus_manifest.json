@@ -1,0 +1,19 @@
+﻿{
+  "papers": [
+    {
+      "paper_id": "1706.03762",
+      "title": "Attention Is All You Need",
+      "source_path": "data/processed/1706.03762/1706.03762/1706.03762.md"
+    },
+    {
+      "paper_id": "1810.04805",
+      "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+      "source_path": "data/processed/1810.04805/1810.04805/1810.04805.md"
+    },
+    {
+      "paper_id": "1810.13083",
+      "title": "GraphIE: A Graph-Based Framework for Information Extraction",
+      "source_path": "data/processed/1810.13083/1810.13083/1810.13083.md"
+    }
+  ]
+}
