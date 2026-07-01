@@ -1,0 +1,218 @@
+﻿[
+    {
+        "question_id":  "q01",
+        "question":  "What is BERT?",
+        "paper_id":  "1810.04805",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1810.04805:simple:0000",
+                                                  "1810.04805:simple:0001",
+                                                  "1810.04805:simple:0002"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1810.04805:section_aware_v2:0000",
+                                                            "1810.04805:section_aware_v2:0001",
+                                                            "1810.04805:section_aware_v2:0002"
+                                                        ]
+                               }
+    },
+    {
+        "question_id":  "q02",
+        "question":  "How does masked language modeling work?",
+        "paper_id":  "1810.04805",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1810.04805:simple:0000",
+                                                  "1810.04805:simple:0001",
+                                                  "1810.04805:simple:0002"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1810.04805:section_aware_v2:0000",
+                                                            "1810.04805:section_aware_v2:0001",
+                                                            "1810.04805:section_aware_v2:0002"
+                                                        ]
+                               }
+    },
+    {
+        "question_id":  "q03",
+        "question":  "What are the two pretraining tasks in BERT?",
+        "paper_id":  "1810.04805",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1810.04805:simple:0001",
+                                                  "1810.04805:simple:0003",
+                                                  "1810.04805:simple:0004"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1810.04805:section_aware_v2:0001",
+                                                            "1810.04805:section_aware_v2:0002",
+                                                            "1810.04805:section_aware_v2:0008"
+                                                        ]
+                               }
+    },
+    {
+        "question_id":  "q04",
+        "question":  "What is the architecture of BERT?",
+        "paper_id":  "1810.04805",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1810.04805:simple:0000",
+                                                  "1810.04805:simple:0001",
+                                                  "1810.04805:simple:0002"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1810.04805:section_aware_v2:0000",
+                                                            "1810.04805:section_aware_v2:0001",
+                                                            "1810.04805:section_aware_v2:0003"
+                                                        ]
+                               }
+    },
+    {
+        "question_id":  "q05",
+        "question":  "What problem does attention solve?",
+        "paper_id":  "1706.03762",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1706.03762:simple:0000",
+                                                  "1706.03762:simple:0001",
+                                                  "1706.03762:simple:0004"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1706.03762:section_aware_v2:0001",
+                                                            "1706.03762:section_aware_v2:0002",
+                                                            "1706.03762:section_aware_v2:0003"
+                                                        ]
+                               }
+    },
+    {
+        "question_id":  "q06",
+        "question":  "What is self-attention?",
+        "paper_id":  "1706.03762",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1706.03762:simple:0000",
+                                                  "1706.03762:simple:0001",
+                                                  "1706.03762:simple:0002"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1706.03762:section_aware_v2:0001",
+                                                            "1706.03762:section_aware_v2:0002",
+                                                            "1706.03762:section_aware_v2:0003"
+                                                        ]
+                               }
+    },
+    {
+        "question_id":  "q07",
+        "question":  "What is multi-head attention?",
+        "paper_id":  "1706.03762",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1706.03762:simple:0000",
+                                                  "1706.03762:simple:0001",
+                                                  "1706.03762:simple:0002"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1706.03762:section_aware_v2:0001",
+                                                            "1706.03762:section_aware_v2:0002",
+                                                            "1706.03762:section_aware_v2:0003"
+                                                        ]
+                               }
+    },
+    {
+        "question_id":  "q08",
+        "question":  "How does the transformer handle word position?",
+        "paper_id":  "1706.03762",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1706.03762:simple:0000",
+                                                  "1706.03762:simple:0001",
+                                                  "1706.03762:simple:0002"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1706.03762:section_aware_v2:0001",
+                                                            "1706.03762:section_aware_v2:0002",
+                                                            "1706.03762:section_aware_v2:0003"
+                                                        ]
+                               }
+    },
+    {
+        "question_id":  "q09",
+        "question":  "What is GraphIE?",
+        "paper_id":  "1810.13083",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1810.13083:simple:0000",
+                                                  "1810.13083:simple:0001",
+                                                  "1810.13083:simple:0002"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1810.13083:section_aware_v2:0000",
+                                                            "1810.13083:section_aware_v2:0001",
+                                                            "1810.13083:section_aware_v2:0002"
+                                                        ]
+                               }
+    },
+    {
+        "question_id":  "q10",
+        "question":  "How does GraphIE represent documents?",
+        "paper_id":  "1810.13083",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1810.13083:simple:0000",
+                                                  "1810.13083:simple:0001",
+                                                  "1810.13083:simple:0002"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1810.13083:section_aware_v2:0000",
+                                                            "1810.13083:section_aware_v2:0001",
+                                                            "1810.13083:section_aware_v2:0003"
+                                                        ]
+                               }
+    },
+    {
+        "question_id":  "q11",
+        "question":  "What types of nodes are used in GraphIE?",
+        "paper_id":  "1810.13083",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1810.13083:simple:0002"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1810.13083:section_aware_v2:0004",
+                                                            "1810.13083:section_aware_v2:0011"
+                                                        ]
+                               }
+    },
+    {
+        "question_id":  "q12",
+        "question":  "How does GraphIE perform inference?",
+        "paper_id":  "1810.13083",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1810.13083:simple:0003",
+                                                  "1810.13083:simple:0007"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1810.13083:section_aware_v2:0005",
+                                                            "1810.13083:section_aware_v2:0013"
+                                                        ]
+                               }
+    },
+    {
+        "question_id":  "q13",
+        "question":  "What datasets were used to evaluate GraphIE?",
+        "paper_id":  "1810.13083",
+        "relevant_chunk_ids":  {
+                                   "simple":  [
+                                                  "1810.13083:simple:0000",
+                                                  "1810.13083:simple:0001",
+                                                  "1810.13083:simple:0002"
+                                              ],
+                                   "section_aware_v2":  [
+                                                            "1810.13083:section_aware_v2:0000",
+                                                            "1810.13083:section_aware_v2:0001",
+                                                            "1810.13083:section_aware_v2:0002"
+                                                        ]
+                               }
+    }
+]
