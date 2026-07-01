@@ -1,1 +1,1 @@
-# TODO: Write unit tests for Q&A approaches
+﻿# Replaced by Milestone 1 retriever tests.
