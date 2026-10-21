@@ -2,11 +2,11 @@
 
 A progressively smarter Question & Answer system for AI research papers, building from traditional sparse retrieval to advanced RAG systems. Learning and building in public.
 
-**Public build log:** [X/Twitter threads](https://x.com/Salma70330363)
+
 
 ---
 
-## 🎯 Project Vision
+## Project Vision
 
 Building a production-quality Q&A system over research papers through iterative improvement:
 
@@ -16,17 +16,17 @@ Building a production-quality Q&A system over research papers through iterative 
 - Optimize for production (re-ranking, agentic flows, multimodal)
 - Deploy and monitor real usage
 
-## 📍 Current Status: Phase 2 Complete, Phase 3 Starting
+## Current Status: Phase 2 Complete, Phase 3 Starting
 
-**Phase 1 Complete** ✅ | **Phase 2 Complete** ✅ | **Phase 3 In Progress** 🚧
+Phase 1 Complete | Phase 2 Complete | Phase 3 In Progress
 
 ---
 
-## 🗺️ Roadmap & Progress
+## Roadmap and Progress
 
-### Phase 1 – Ugly MVP: BM25 Keyword Search ✅ (Completed Jan 2026)
+### Phase 1 - Ugly MVP: BM25 Keyword Search (Completed Jan 2026)
 
-**Goal:** Traditional sparse retrieval baseline — fast and functional.
+**Goal:** Traditional sparse retrieval baseline - fast and functional.
 
 **Implementation:**
 
@@ -38,9 +38,9 @@ Building a production-quality Q&A system over research papers through iterative 
 
 **Evaluation Results** (10 test questions, keyword-proxy relevance):
 
-- **Hit Rate@3:** 70% — 7/10 questions found relevant keywords in top-3 chunks
-- **Avg Position:** 1.43 — When found, relevant info appeared very early
-- **Avg Response Time:** ~1ms — Blazing fast retrieval
+- **Hit Rate@3:** 70% - 7/10 questions found relevant keywords in top-3 chunks
+- **Avg Position:** 1.43 - When found, relevant info appeared very early
+- **Avg Response Time:** ~1ms - Blazing fast retrieval
 
 **Key Files:**
 
@@ -65,7 +65,7 @@ python evaluation/view_logs.py
 
 ---
 
-### Phase 2 – Sectioned & Hybrid RAG ✅ (Completed Jan 2026)
+### Phase 2 - Sectioned and Hybrid RAG (Completed Jan 2026)
 
 **Goal:** Smarter chunking + hybrid retrieval for better semantic matching.
 
@@ -73,7 +73,7 @@ python evaluation/view_logs.py
 
 - **Section-aware chunking:** Preserve markdown structure from marker-pdf extraction (444 chunks vs 49 simple)
 - **Dense embeddings:** Sentence-BERT (all-MiniLM-L6-v2) for semantic search with ChromaDB
-- **Hybrid retrieval:** BM25 + semantic search with score fusion (α=0.4, β=0.6)
+- **Hybrid retrieval:** BM25 + semantic search with score fusion (alpha=0.4, beta=0.6)
 - **Dynamic chunking:** Support for SimpleChunker and SectionAwareChunker
 - **Better metadata:** Section types and paper IDs for improved grounding
 
@@ -116,13 +116,13 @@ python main.py
 
 ---
 
-### Phase 3 – Advanced RAG + Agentic Extraction (Planned)
+### Phase 3 - Advanced RAG and Agentic Extraction (Planned)
 
 **Goal:** Production-quality optimizations with multimodal support.
 
 **Key Techniques:**
 
-- Agentic parsing (tables, figures, equations — using DeepLearning.AI Document AI patterns)
+- Agentic parsing (tables, figures, equations - using DeepLearning.AI Document AI patterns)
 - Advanced re-ranking (Cohere Rerank or cross-encoder)
 - Context optimization (query rewriting, compression)
 - Full citation tracking (section + page + figure refs)
@@ -138,7 +138,7 @@ python main.py
 
 ---
 
-### Phase 4 – Extractive + Fine-tuned (Longer Term)
+### Phase 4 - Extractive and Fine-tuned (Longer Term)
 
 - Extractive Q&A with BERT-style span extraction
 - Domain-specific fine-tuning on paper Q&A pairs
@@ -146,17 +146,17 @@ python main.py
 
 ---
 
-### Phase 5 – Full Production RAG (End Goal)
+### Phase 5 - Full Production RAG (End Goal)
 
-- Complete pipeline: Simple RAG → Advanced RAG → Fine-tuned
-- Deployment (HuggingFace Spaces / FastAPI )
+- Complete pipeline: Simple RAG -> Advanced RAG -> Fine-tuned
+- Deployment (HuggingFace Spaces / FastAPI)
 - Comprehensive evaluation (RAGAS, faithfulness, human feedback)
 - Real-time paper ingestion and updates
 - **Status:** Vision for production system
 
 ---
 
-## 📊 Dataset
+## Dataset
 
 **Current Papers (Phase 1-2):**
 
@@ -170,7 +170,7 @@ python main.py
 
 ---
 
-## 🛠️ Technical Stack
+## Technical Stack
 
 **Current (Phase 1-2):**
 
@@ -183,13 +183,13 @@ python main.py
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
 ```bash
 git clone https://github.com/Salwa08/academic-paper-qa-system.git
-cd q&a-system
+cd academic-paper-qa-system
 pip install -r requirements.txt
 ```
 
@@ -239,42 +239,42 @@ python evaluation/view_logs.py
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-q&a-system/
+academic-paper-qa-system/
 ├── src/
-│ ├── approaches/
-│ │ ├── keyword_search/ # ✅ BM25 implementation
-│ │ │ └── keyword_qa.py
-│ │ └── hybrid_search/ # ✅ Hybrid BM25 + dense
-│ │ └── hybrid_qa.py
-│ ├── data/
-│ │ ├── arxiv_scraper.py # Paper downloads
-│ │ ├── chunking.py # ✅ Simple & section-aware chunkers
-│ │ ├── download_and_extract.py
-│ │ ├── paper_processor.py # BM25 indexing
-│ │ └── text_preprocessor.py
-│ └── utils/
-│ ├── base_qa_model.py # Base class for all approaches
-│ ├── config.py
-│ └── query_logger.py # Query tracking
+│   ├── approaches/
+│   │   ├── keyword_search/ # BM25 implementation
+│   │   │   └── keyword_qa.py
+│   │   └── hybrid_search/ # Hybrid BM25 + dense
+│   │       └── hybrid_qa.py
+│   ├── data/
+│   │   ├── arxiv_scraper.py # Paper downloads
+│   │   ├── chunking.py # Simple and section-aware chunkers
+│   │   ├── download_and_extract.py
+│   │   ├── paper_processor.py # BM25 indexing
+│   │   └── text_preprocessor.py
+│   └── utils/
+│       ├── base_qa_model.py # Base class for all approaches
+│       ├── config.py
+│       └── query_logger.py # Query tracking
 ├── data/
-│ ├── processed/
-│ │ ├── processed_chunks_simple.json # 49 chunks
-│ │ └── processed_chunks_section_aware.json # 444 chunks
-│ └── raw/pdfs/
+│   ├── processed/
+│   │   ├── processed_chunks_simple.json # 49 chunks
+│   │   └── processed_chunks_section_aware.json # 444 chunks
+│   └── raw/pdfs/
 ├── evaluation/
-│ ├── metrics_bm25.py # Hit rate, avg position metrics
-│ ├── evaluate_bm25.py # ✅ BM25 evaluation
-│ ├── evaluate_hybrid.py # ✅ Hybrid evaluation
-│ ├── test_questions.json # 13 test questions
-│ ├── view_logs.py # Query log viewer
-│ └── results/
-│ ├── bm25_results.json # ✅ All phases
-│ └── hybrid_results.json # ✅ All phases
+│   ├── metrics_bm25.py # Hit rate, avg position metrics
+│   ├── evaluate_bm25.py # BM25 evaluation
+│   ├── evaluate_hybrid.py # Hybrid evaluation
+│   ├── test_questions.json # 13 test questions
+│   ├── view_logs.py # Query log viewer
+│   └── results/
+│       ├── bm25_results.json # All phases
+│       └── hybrid_results.json # All phases
 ├── logs/
-│ └── query_log.jsonl # All queries tracked
+│   └── query_log.jsonl # All queries tracked
 ├── main.py # Interactive CLI
 ├── config.yaml
 └── requirements.txt
@@ -282,19 +282,19 @@ q&a-system/
 
 ---
 
-## 🔍 Key Learnings (Phase 1-2)
+## Key Learnings (Phase 1-2)
 
-1. **BM25 is fast and effective** — 1ms retrieval, 70-92% hit rate depending on chunking
-2. **Chunking strategy matters hugely** — Simple chunking (92%) vs section-aware (46-54%), highlighting the importance of domain-specific chunking
-3. **Hybrid search adds semantic value** — 54% vs 46% on section-aware chunks shows benefit of combining sparse + dense retrieval
-4. **Early ranking is good** — When systems find relevant chunks, they rank in top 2 positions
-5. **Query logging is essential** — Understanding usage patterns guides improvements
-6. **Good chunking matters** — 500 tokens with 50 overlap provides good context, but structure preservation is key for academic papers
-7. **Score fusion needs tuning** — Equal weighting (α=0.5, β=0.5) works but optimizing to α=0.4, β=0.6 improved section-aware performance by 15%
+1. **BM25 is fast and effective** - 1ms retrieval, 70-92% hit rate depending on chunking
+2. **Chunking strategy matters hugely** - Simple chunking (92%) vs section-aware (46-54%), highlighting the importance of domain-specific chunking
+3. **Hybrid search adds semantic value** - 54% vs 46% on section-aware chunks shows benefit of combining sparse + dense retrieval
+4. **Early ranking is good** - When systems find relevant chunks, they rank in top 2 positions
+5. **Query logging is essential** - Understanding usage patterns guides improvements
+6. **Good chunking matters** - 500 tokens with 50 overlap provides good context, but structure preservation is key for academic papers
+7. **Score fusion needs tuning** - Equal weighting (alpha=0.5, beta=0.5) works but optimizing to alpha=0.4, beta=0.6 improved section-aware performance by 15%
 
 ---
 
-## 📈 Future Improvements
+## Future Improvements
 
 **Phase 3 (Next):**
 
@@ -315,21 +315,22 @@ q&a-system/
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 This is a learning project built in public. Feedback, suggestions, and contributions welcome!
 
 ---
 
-## 📝 License
+## License
 
 MIT License - See LICENSE file for details
 
 ---
 
-**Part of:** [AI Journey 365](https://github.com/Salwa08/ai-journey-365)
+
 **Author:** Salwa Khattami
 **Started:** January 2026
-**Status:** Phase 2 Complete ✅, Phase 3 Starting 🚧
+**Status:** Phase 2 Complete, Phase 3 Starting
+**Public build log:** [X/Twitter threads](https://x.com/salwakhattami)
 
-**Current Focus:** Phase 2 documentation complete → Starting Phase 3 (LLM integration + advanced RAG)
+**Current Focus:** Phase 2 documentation complete -> Starting Phase 3 (LLM integration + advanced RAG)
