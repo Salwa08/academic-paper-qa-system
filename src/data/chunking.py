@@ -138,5 +138,5 @@ class SectionAwareChunker(BaseChunker):
     
     def clean_md(self, text: str) -> str:
         text = re.sub(r'<span id="page-\d+-\d+"></span>', '', text)
-        text = re.sub(r'!\[.*?\]\(.*?\)', '', text)  # remove images
+        text = re.sub(r'!\[[^\]\n]*\]\([^)\n]*\)', '', text)
         return text.strip()
